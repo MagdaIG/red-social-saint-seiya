@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caballeros Network - Red Social</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-star me-2"></i>CABALLEROS NETWORK
+    </a>
+    <div class="d-flex">
+      <form class="d-flex ms-3">
+        <input class="form-control me-2" type="search" placeholder="Buscar caballeros...">
+        <button class="btn btn-outline-light" type="submit">Buscar</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="row">
+    <!-- Perfil lateral izquierdo -->
+    <div class="col-lg-3 mb-4">
+      <div class="card profile-card">
+        <div class="card-body text-center">
+          <img src="assets/img/seiya.png" class="profile-img mb-3" alt="Seiya de Pegaso" id="profileImage">
+          <h4 class="card-title" id="profileName">Seiya de Pegaso</h4>
+          <p class="text-muted" id="profileConstellation">Caballero de Pegaso</p>
+          <div class="d-flex justify-content-between mb-3">
+            <div>
+              <h6 class="mb-0" id="profilePosts">12</h6>
+              <small class="text-muted">Publicaciones</small>
+            </div>
+            <div>
+              <h6 class="mb-0" id="profileFollowers">1.5K</h6>
+              <small class="text-muted">Seguidores</small>
+            </div>
+            <div>
+              <h6 class="mb-0" id="profileFollowing">87</h6>
+              <small class="text-muted">Siguiendo</small>
+            </div>
+          </div>
+          <p class="card-text" id="profileBio">"Mi cosmos arde más que las estrellas. Protegeré a Atena con mi vida."</p>
+          <button class="btn btn-primary btn-sm w-100 mb-2">Editar perfil</button>
+          <button class="btn btn-outline-primary btn-sm w-100" id="changeProfile">Cambiar caballero</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Publicaciones-->
+    <div class="col-lg-6">
+      <!-- Crear publicación -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex">
+            <img src="assets/img/seiya.png" class="rounded-circle me-3" width="40" height="40" alt="Usuario">
+            <input type="text" class="form-control" placeholder="¿Qué está pasando en el Santuario?">
+          </div>
+          <div class="mt-3 d-flex justify-content-between">
+            <div>
+              <button class="btn btn-sm btn-outline-secondary me-2"><i class="fas fa-image"></i></button>
+              <button class="btn btn-sm btn-outline-secondary me-2"><i class="fas fa-video"></i></button>
+              <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-paperclip"></i></button>
+            </div>
+            <button class="btn btn-sm btn-primary">Publicar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Publicación 1 -->
+      <div class="card mb-4 post-card">
+        <div class="card-body">
+          <div class="d-flex mb-3">
+            <img src="assets/img/seiya.png" class="rounded-circle me-3" width="50" height="50" alt="Seiya">
+            <div>
+              <h6 class="mb-0">Seiya de Pegaso</h6>
+              <small class="text-muted">Hace 2 horas</small>
+            </div>
+          </div>
+          <p class="card-text">Hoy entrené con Shiryu en los Cinco Picos Antiguos. ¡Nuestros Meteoros de Pegaso y Dragón se unieron para crear una técnica increíble! #CaballerosDelZodiaco #Santuario</p>
+          <img src="assets/img/entrenamiento.png" class="img-fluid rounded mb-3" alt="Entrenamiento">
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-like" onclick="likePost(this)">
+              <i class="far fa-heart me-1"></i> <span class="like-count">42</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm toggle-comments" onclick="toggleComments(this.closest('.post-card'))">
+              <i class="far fa-comment me-1"></i> <span class="comment-count">3</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm">
+              <i class="fas fa-share me-1"></i> Compartir
+            </button>
+          </div>
+
+          <!-- Sección de comentarios -->
+          <div class="comments-section d-none mt-3">
+            <div class="comments-container">
+              <div class="d-flex mb-2">
+                <img src="assets/img/shiryu.png" class="rounded-circle me-2" width="32" height="32" alt="Shiryu">
+                <div class="bg-light p-2 rounded flex-grow-1">
+                  <strong>Shiryu de Dragón</strong>
+                  <p class="mb-0">¡Gran técnica! Deberíamos practicar más a menudo.</p>
+                </div>
+              </div>
+              <div class="d-flex mb-2">
+                <img src="assets/img/hyoga.png" class="rounded-circle me-2" width="32" height="32" alt="Hyoga">
+                <div class="bg-light p-2 rounded flex-grow-1">
+                  <strong>Hyoga de Cisne</strong>
+                  <p class="mb-0">Me gustaría unirme al próximo entrenamiento.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input para nuevo comentario -->
+            <div class="d-flex mt-3 comment-input-container">
+              <input type="text" class="form-control comment-input" placeholder="Escribe un comentario...">
+              <button class="btn btn-primary btn-sm comment-btn"
+                      onclick="addComment(this.closest('.post-card'))">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Publicación 2 -->
+      <div class="card mb-4 post-card">
+        <div class="card-body">
+          <div class="d-flex mb-3">
+            <img src="assets/img/shaina.png" class="rounded-circle me-3" width="50" height="50" alt="Shaina">
+            <div>
+              <h6 class="mb-0">Shaina de Ofiuco</h6>
+              <small class="text-muted">Hoy a las 10:15</small>
+            </div>
+          </div>
+          <p class="card-text">Hoy entrenamos duro. No subestimen a una Caballera de Plata. #Ofiuco #Disciplina</p>
+          <img src="assets/img/shaina-history.png" class="img-fluid rounded mb-3" alt="shaina">
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-like" onclick="likePost(this)">
+              <i class="far fa-heart me-1"></i> <span class="like-count">19</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm toggle-comments" onclick="toggleComments(this.closest('.post-card'))">
+              <i class="far fa-comment me-1"></i> <span class="comment-count">1</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm">
+              <i class="fas fa-share me-1"></i> Compartir
+            </button>
+          </div>
+
+          <!-- Sección de comentarios -->
+          <div class="comments-section d-none mt-3">
+            <div class="comments-container">
+              <div class="d-flex mb-2">
+                <img src="assets/img/marin.png" class="rounded-circle me-2" width="32" height="32" alt="Marin">
+                <div class="bg-light p-2 rounded flex-grow-1">
+                  <strong>Marin del Águila</strong>
+                  <p class="mb-0">Excelente demostración de disciplina, Shaina.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input para nuevo comentario -->
+            <div class="d-flex mt-3 comment-input-container">
+              <input type="text" class="form-control comment-input" placeholder="Escribe un comentario...">
+              <button class="btn btn-primary btn-sm comment-btn"
+                      onclick="addComment(this.closest('.post-card'))">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- hyoga -->
+      <div class="card mb-4 post-card">
+        <div class="card-body">
+          <div class="d-flex mb-3">
+            <img src="assets/img/hyoga.png" class="rounded-circle me-3" width="50" height="50" alt="Hyoga">
+            <div>
+              <h6 class="mb-0">Hyoga de Cisne</h6>
+              <small class="text-muted">Ayer a las 16:30</small>
+            </div>
+          </div>
+          <p class="card-text">El frío de Siberia no es nada comparado con el frío que siento cuando recuerdo a mi madre. Pero cada día que entreno, siento que estoy más cerca de cumplir su legado. #MemoriaDeMiMadre #Siberia</p>
+          <img src="assets/img/hyoga-siberia.png" class="img-fluid rounded mb-3" alt="Hyoga en Siberia">
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-like" onclick="likePost(this)">
+              <i class="far fa-heart me-1"></i> <span class="like-count">28</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm toggle-comments" onclick="toggleComments(this.closest('.post-card'))">
+              <i class="far fa-comment me-1"></i> <span class="comment-count">5</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm">
+              <i class="fas fa-share me-1"></i> Compartir
+            </button>
+          </div>
+
+          <!-- Sección de comentarios -->
+          <div class="comments-section d-none mt-3">
+            <div class="comments-container">
+              <div class="d-flex mb-2">
+                <img src="assets/img/shun.png" class="rounded-circle me-2" width="32" height="32" alt="Shun">
+                <div class="bg-light p-2 rounded flex-grow-1">
+                  <strong>Shun de Andrómeda</strong>
+                  <p class="mb-0">Tu madre estaría orgullosa de ti, Hyoga.</p>
+                </div>
+              </div>
+              <div class="d-flex mb-2">
+                <img src="assets/img/ikki.png" class="rounded-circle me-2" width="32" height="32" alt="Ikki">
+                <div class="bg-light p-2 rounded flex-grow-1">
+                  <strong>Ikki de Fénix</strong>
+                  <p class="mb-0">El dolor nos hace más fuertes. Sigue adelante.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input para nuevo comentario -->
+            <div class="d-flex mt-3 comment-input-container">
+              <input type="text" class="form-control comment-input" placeholder="Escribe un comentario...">
+              <button class="btn btn-primary btn-sm comment-btn"
+                      onclick="addComment(this.closest('.post-card'))">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ikki -->
+      <div class="card mb-4 post-card">
+        <div class="card-body">
+          <div class="d-flex mb-3">
+            <img src="assets/img/ikki.png" class="rounded-circle me-3" width="50" height="50" alt="Ikki">
+            <div>
+              <h6 class="mb-0">Ikki de Fénix</h6>
+              <small class="text-muted">Hace 1 día</small>
+            </div>
+          </div>
+          <p class="card-text">La Isla de la Reina Muerte no pudo romperme. Cada vez que caigo, renazco más fuerte. Así es la leyenda del Fénix. #Renacer #FuerzaInterior</p>
+          <img src="assets/img/ikki-fenix.png" class="img-fluid rounded mb-3" alt="Ikki renaciendo">
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-like" onclick="likePost(this)">
+              <i class="far fa-heart me-1"></i> <span class="like-count">35</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm toggle-comments" onclick="toggleComments(this.closest('.post-card'))">
+              <i class="far fa-comment me-1"></i> <span class="comment-count">2</span>
+            </button>
+            <button class="btn btn-outline-secondary btn-sm">
+              <i class="fas fa-share me-1"></i> Compartir
+            </button>
+          </div>
+
+          <!-- Sección de comentarios -->
+          <div class="comments-section d-none mt-3">
+            <div class="comments-container">
+              <div class="d-flex mb-2">
+                <img src="assets/img/shun.png" class="rounded-circle me-2" width="32" height="32" alt="Shun">
+                <div class="bg-light p-2 rounded flex-grow-1">
+                  <strong>Shun de Andrómeda</strong>
+                  <p class="mb-0">Hermano, siempre admiraré tu fuerza.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input para nuevo comentario -->
+            <div class="d-flex mt-3 comment-input-container">
+              <input type="text" class="form-control comment-input" placeholder="Escribe un comentario...">
+              <button class="btn btn-primary btn-sm comment-btn"
+                      onclick="addComment(this.closest('.post-card'))">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna derecha para personas que quizas conozcas y otros que se me ocurran en el camino-->
+    <div class="col-lg-3">
+      <!-- Personas que quizás conozcas -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h6 class="card-title mb-3">Personas que quizás conozcas</h6>
+
+          <div class="d-flex align-items-center mb-3 suggested-user">
+            <img src="assets/img/athena.png" class="rounded-circle me-3" width="50" height="50" alt="Atena">
+            <div class="flex-grow-1">
+              <h6 class="mb-0">Atena (Saori Kido)</h6>
+              <small class="text-muted">5 amigos en común</small>
+            </div>
+            <button class="btn btn-sm btn-outline-primary follow-btn">Seguir</button>
+          </div>
+
+          <div class="d-flex align-items-center mb-3 suggested-user">
+            <img src="assets/img/milo.png" class="rounded-circle me-3" width="50" height="50" alt="Milo">
+            <div class="flex-grow-1">
+              <h6 class="mb-0">Milo de Escorpión</h6>
+              <small class="text-muted">3 amigos en común</small>
+            </div>
+            <button class="btn btn-sm btn-outline-primary follow-btn">Seguir</button>
+          </div>
+
+          <div class="d-flex align-items-center mb-3 suggested-user">
+            <img src="assets/img/mu.png" class="rounded-circle me-3" width="50" height="50" alt="Mu">
+            <div class="flex-grow-1">
+              <h6 class="mb-0">Mu de Aries</h6>
+              <small class="text-muted">4 amigos en común</small>
+            </div>
+            <button class="btn btn-sm btn-outline-primary follow-btn">Seguir</button>
+          </div>
+
+          <div class="d-flex align-items-center mb-3 suggested-user">
+            <img src="assets/img/aldebaran.png" class="rounded-circle me-3" width="50" height="50" alt="Aldebarán">
+            <div class="flex-grow-1">
+              <h6 class="mb-0">Aldebarán de Tauro</h6>
+              <small class="text-muted">2 amigos en común</small>
+            </div>
+            <button class="btn btn-sm btn-outline-primary follow-btn">Seguir</button>
+          </div>
+
+          <div class="d-flex align-items-center suggested-user">
+            <img src="assets/img/marin.png" class="rounded-circle me-3" width="50" height="50" alt="Marin">
+            <div class="flex-grow-1">
+              <h6 class="mb-0">Marin del Águila</h6>
+              <small class="text-muted">6 amigos en común</small>
+            </div>
+            <button class="btn btn-sm btn-outline-primary follow-btn">Seguir</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Eventos del Santuario já-->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h6 class="card-title mb-3">Eventos del Santuario</h6>
+          <div class="event-item mb-3">
+            <div class="event-date bg-primary text-white">15</div>
+            <div class="event-info">
+              <h6 class="mb-0">Torneo Galáctico</h6>
+              <small class="text-muted">Coliseo de Athena</small>
+            </div>
+          </div>
+          <div class="event-item mb-3">
+            <div class="event-date bg-danger text-white">22</div>
+            <div class="event-info">
+              <h6 class="mb-0">Entrenamiento con Gold Saints</h6>
+              <small class="text-muted">12 Casas del Zodiaco</small>
+            </div>
+          </div>
+          <div class="event-item">
+            <div class="event-date bg-success text-white">30</div>
+            <div class="event-info">
+              <h6 class="mb-0">Ceremonia de Athena</h6>
+              <small class="text-muted">Templo de Athena</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Historias destacadas -->
+      <div class="card">
+        <div class="card-body stories">
+          <h6 class="card-title mb-3">Historias destacadas</h6>
+          <div class="d-flex overflow-auto pb-2">
+            <div class="text-center mx-2 story">
+              <div class="story-avatar">
+                <img src="assets/img/seiya.png" class="rounded-circle" alt="Seiya">
+              </div>
+              <small>Seiya</small>
+            </div>
+            <div class="text-center mx-2 story">
+              <div class="story-avatar">
+                <img src="assets/img/shiryu.png" class="rounded-circle" alt="Shiryu">
+              </div>
+              <small>Shiryu</small>
+            </div>
+            <div class="text-center mx-2 story">
+              <div class="story-avatar">
+                <img src="assets/img/hyoga.png" class="rounded-circle" alt="Hyoga">
+              </div>
+              <small>Hyoga</small>
+            </div>
+            <div class="text-center mx-2 story">
+              <div class="story-avatar">
+                <img src="assets/img/shun.png" class="rounded-circle" alt="Shun">
+              </div>
+              <small>Shun</small>
+            </div>
+            <div class="text-center mx-2 story">
+              <div class="story-avatar">
+                <img src="assets/img/ikki.png" class="rounded-circle" alt="Ikki">
+              </div>
+              <small>Ikki</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- intentanto llegar a mi footer deseado generico, debo corregirlo luego no olvidar-->
+<footer class="footer mt-5 py-4 bg-dark text-light">
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Logo y derechos -->
+      <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+        <div class="d-flex justify-content-center justify-content-md-start align-items-center">
+          <i class="fas fa-star me-2 text-warning"></i>
+          <span class="fw-bold">CABALLEROS NETWORK</span>
+        </div>
+        <small class="d-block mt-2">© 2023 Todos los derechos reservados</small>
+      </div>
+
+      <!-- Enlaces -->
+      <div class="col-md-4 text-center mb-3 mb-md-0">
+        <div class="d-flex justify-content-center">
+          <a href="https://inalaf.ca" target="_blank" class="footer-link mx-3">
+            <i class="fas fa-globe"></i> Web
+          </a>
+          <a href="https://github.com/MagdaIG" target="_blank" class="footer-link mx-3">
+            <i class="fab fa-github"></i> GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/minalaf/" target="_blank" class="footer-link mx-3">
+            <i class="fab fa-linkedin"></i> LinkedIn
+          </a>
+        </div>
+      </div>
+
+      <!-- Créditos -->
+      <div class="col-md-4 text-center text-md-end">
+        <div class="footer-credits">
+          <span class="d-block">Desarrollado con <i class="fas fa-heart text-danger"></i> por</span>
+          <span class="fw-bold">Magdalena Inalaf G.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/script.js"></script>
+</body>
+</html>
