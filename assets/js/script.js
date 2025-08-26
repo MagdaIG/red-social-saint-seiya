@@ -55,6 +55,19 @@ function addComment(postElement) {
   }
 }
 
+// Función para compartir publicación
+function sharePost(button) {
+  const currentProfile = profiles[currentProfileIndex];
+  const shareModal = new bootstrap.Modal(document.getElementById('shareModal'));
+
+  // Actualizar el modal con la información del perfil actual
+  document.getElementById('shareProfileImage').src = `assets/img/${currentProfile.img}`;
+  document.getElementById('shareProfileName').textContent = currentProfile.name;
+
+  // Mostrar el modal
+  shareModal.show();
+}
+
 // Variables globales para el perfil
 let currentProfileIndex = 0;
 const profiles = [
@@ -109,6 +122,7 @@ const profiles = [
 function updateProfileDisplay() {
   const profile = profiles[currentProfileIndex];
   const profileImg = document.getElementById('profileImage');
+  const postFormAvatar = document.getElementById('postFormAvatar');
 
   profileImg.classList.add('profile-change');
 
@@ -120,6 +134,11 @@ function updateProfileDisplay() {
     document.getElementById('profilePosts').textContent = profile.posts;
     document.getElementById('profileFollowers').textContent = profile.followers;
     document.getElementById('profileFollowing').textContent = profile.following;
+
+    // Actualizar también la imagen del formulario de publicación
+    if (postFormAvatar) {
+      postFormAvatar.src = `assets/img/${profile.img}`;
+    }
 
     profileImg.classList.remove('profile-change');
   }, 500);
@@ -151,17 +170,130 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  // Editor de perfil
+  const editProfileBtn = document.getElementById('editProfileBtn');
+  const editProfileModal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+  const saveProfileBtn = document.getElementById('saveProfileBtn');
+  const editProfileImageSelect = document.getElementById('editProfileImageSelect');
+  const editProfileBio = document.getElementById('editProfileBio');
+  const bioCharCount = document.getElementById('bioCharCount');
+
+  // Abrir modal de edición
+  if (editProfileBtn) {
+    editProfileBtn.addEventListener('click', function() {
+      loadProfileData();
+      editProfileModal.show();
+    });
+  }
+
+  // Cargar datos del perfil actual en el modal
+  function loadProfileData() {
+    const currentProfile = profiles[currentProfileIndex];
+
+    document.getElementById('editProfileName').value = currentProfile.name;
+    document.getElementById('editProfileConstellation').value = currentProfile.constellation;
+    document.getElementById('editProfileBio').value = currentProfile.bio.replace(/"/g, '');
+    document.getElementById('editProfilePosts').value = currentProfile.posts;
+    document.getElementById('editProfileFollowers').value = currentProfile.followers;
+    document.getElementById('editProfileFollowing').value = currentProfile.following;
+    document.getElementById('editProfileImage').src = `assets/img/${currentProfile.img}`;
+
+    // Seleccionar la imagen correcta en el dropdown
+    editProfileImageSelect.value = currentProfile.img;
+
+    // Actualizar contador de caracteres
+    updateBioCharCount();
+  }
+
+  // Actualizar contador de caracteres de la biografía
+  function updateBioCharCount() {
+    const currentLength = editProfileBio.value.length;
+    bioCharCount.textContent = currentLength;
+
+    if (currentLength > 180) {
+      bioCharCount.style.color = '#dc3545';
+    } else if (currentLength > 150) {
+      bioCharCount.style.color = '#ffc107';
+    } else {
+      bioCharCount.style.color = '#6c757d';
+    }
+  }
+
+  // Cambiar imagen de perfil desde el dropdown
+  if (editProfileImageSelect) {
+    editProfileImageSelect.addEventListener('change', function() {
+      const selectedImage = this.value;
+      document.getElementById('editProfileImage').src = `assets/img/${selectedImage}`;
+    });
+  }
+
+  // Contador de caracteres en tiempo real
+  if (editProfileBio) {
+    editProfileBio.addEventListener('input', updateBioCharCount);
+  }
+
+  // Guardar cambios del perfil
+  if (saveProfileBtn) {
+    saveProfileBtn.addEventListener('click', function() {
+      const form = document.getElementById('editProfileForm');
+
+      if (form.checkValidity()) {
+        // Actualizar el perfil actual
+        const currentProfile = profiles[currentProfileIndex];
+
+        currentProfile.name = document.getElementById('editProfileName').value;
+        currentProfile.constellation = document.getElementById('editProfileConstellation').value;
+        currentProfile.bio = `"${document.getElementById('editProfileBio').value}"`;
+        currentProfile.posts = document.getElementById('editProfilePosts').value;
+        currentProfile.followers = document.getElementById('editProfileFollowers').value;
+        currentProfile.following = document.getElementById('editProfileFollowing').value;
+        currentProfile.img = editProfileImageSelect.value;
+
+        // Actualizar la visualización del perfil
+        updateProfileDisplay();
+
+        // Cerrar modal
+        editProfileModal.hide();
+
+        // Mostrar notificación de éxito
+        showNotification('Perfil actualizado exitosamente', 'success');
+      } else {
+        form.reportValidity();
+      }
+    });
+  }
+
+  // Función para mostrar notificaciones
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    notification.innerHTML = `
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Auto-remover después de 3 segundos
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 3000);
+  }
+
   // Publicar nueva publicación
-  const postButton = document.querySelector('.btn-primary[type="button"]');
+  const postButton = document.getElementById('publishButton');
   if (postButton) {
     postButton.addEventListener('click', function() {
-      const postInput = document.querySelector('.form-control[type="text"]');
+      const postInput = document.querySelector('.form-control[placeholder="¿Qué está pasando en el Santuario?"]');
       const postText = postInput.value.trim();
 
       if (postText) {
         const postsContainer = document.querySelector('.col-lg-6');
         const newPost = document.createElement('div');
-        newPost.className = 'card mb-4 post-card';
+        newPost.className = 'card mb-4 post-card new-post';
 
         const currentProfile = profiles[currentProfileIndex];
 
@@ -182,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
               <button class="btn btn-outline-secondary btn-sm toggle-comments" onclick="toggleComments(this.closest('.post-card'))">
                 <i class="far fa-comment me-1"></i> <span class="comment-count">0</span>
               </button>
-              <button class="btn btn-outline-secondary btn-sm">
+              <button class="btn btn-outline-secondary btn-sm share-btn" onclick="sharePost(this)">
                 <i class="fas fa-share me-1"></i> Compartir
               </button>
             </div>
@@ -198,8 +330,15 @@ document.addEventListener('DOMContentLoaded', function () {
           </div>
         `;
 
-        postsContainer.insertBefore(newPost, postsContainer.children[1]);
+        // Insertar después del formulario de crear publicación
+        const createPostCard = postsContainer.querySelector('.card');
+        postsContainer.insertBefore(newPost, createPostCard.nextSibling);
         postInput.value = '';
+
+        // Limpiar la clase de animación después de un tiempo
+        setTimeout(() => {
+          newPost.classList.remove('new-post');
+        }, 500);
       }
     });
   }

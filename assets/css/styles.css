@@ -533,6 +533,150 @@ body {
   pointer-events: none;
 }
 
+/* Modal de edición de perfil */
+.modal-content {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal de compartir */
+#shareModal .modal-content {
+  border-radius: 20px;
+}
+
+#shareModal .modal-header {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border-radius: 20px 20px 0 0;
+}
+
+.share-avatar {
+  position: relative;
+  display: inline-block;
+}
+
+.share-avatar img {
+  border: 4px solid #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.share-avatar::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: linear-gradient(45deg, #28a745, #20c997, #17a2b8);
+  border-radius: 50%;
+  z-index: -1;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+.text-success {
+  color: #28a745 !important;
+}
+
+#shareModal .modal-footer {
+  border-top: none;
+  padding: 1rem 2rem 2rem;
+}
+
+#shareModal .btn-primary {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border: none;
+  border-radius: 25px;
+  padding: 0.5rem 2rem;
+  transition: all 0.3s ease;
+}
+
+#shareModal .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #2d4263 0%, #1a1a2e 100%);
+  color: white;
+  border-radius: 15px 15px 0 0;
+  border-bottom: none;
+}
+
+.modal-title i {
+  color: #f8d347;
+}
+
+.btn-close {
+  filter: invert(1);
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+#editProfileImage {
+  border: 4px solid #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+#editProfileImage:hover {
+  transform: scale(1.05);
+}
+
+#changeProfileImage {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #2d4263;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #2d4263;
+  box-shadow: 0 0 0 0.2rem rgba(45, 66, 99, 0.25);
+}
+
+.form-text {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+  padding: 1rem 2rem;
+}
+
+/* Animación del modal */
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: translate(0, -50px);
+}
+
+.modal.show .modal-dialog {
+  transform: none;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .footer-link {
@@ -543,5 +687,13 @@ body {
 
   .footer-credits {
     margin-top: 15px;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .modal-footer {
+    padding: 1rem;
   }
 }
